@@ -1,28 +1,28 @@
-import type { Config } from 'tailwindcss';
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}'
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}"
   ],
   theme: {
     extend: {
       colors: {
-        'primary': {
-          700: '#FFBDF9'
+        "primary": {
+          700: "#FFBDF9"
         },
-        'secondary': {
-          700: '#967BB6'
+        "secondary": {
+          700: "#926AA6"
         },
-        'accent': {
-          700: '#E8A900'
+        "accent": {
+          700: "#FFC857"
         },
-        'background': {
-          700: '#FFEEFC'
+        "background": {
+          700: "#FFF7FC"
         },
-        'gray': {
-          700: '#0D030D'
+        "gray": {
+          700: "#0D030D"
         }
       }
     }
