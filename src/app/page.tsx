@@ -1,7 +1,13 @@
-export default function Home() {
+import React from "react";
+
+import NavBar from "@/components/server/NavBar";
+
+const Home: React.FC = () => {
   return (
     <main>
-      <h1>DevMatch</h1>
+      <NavBar />
     </main>
   );
-}
+};
+
+export default Home;
