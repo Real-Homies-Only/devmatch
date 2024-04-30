@@ -1,8 +1,7 @@
 import React from "react";
 
 import ProjectsButton from "../client/ProjectsButton";
-import LoginButton from "../client/LoginButton";
-import RegisterButton from "../client/RegisterButton";
+import AccountButtons from "../client/AccountButtons";
 import Logo from "../client/Logo";
 import { poppins } from "../fonts/poppins";
 
@@ -21,12 +20,7 @@ const NavBar: React.FC = () => {
           <ProjectsButton />
         </span>
       </div>
-      <div
-        className={`flex items-center text-xs ${poppins.className} font-light`}
-      >
-        <LoginButton />
-        <RegisterButton />
-      </div>
+      <AccountButtons />
     </nav>
   );
 };
