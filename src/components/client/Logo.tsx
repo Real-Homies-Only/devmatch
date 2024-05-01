@@ -6,12 +6,14 @@ const Logo: React.FC = () => {
   const router = useRouter();
 
   return (
-    <span
-      onClick={() => router.push("/")}
-      className="text-2xl text-primary-700 cursor-pointer"
-    >
-      DM
-    </span>
+    <div className="flex-1">
+      <span
+        onClick={() => router.push("/")}
+        className="btn btn-ghost btn-sm text-xl text-primary-700"
+      >
+        DM
+      </span>
+    </div>
   );
 };
 

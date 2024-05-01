@@ -54,6 +54,8 @@ export async function GET(): Promise<NextResponse> {
   } catch (err) {
     console.error("Error checking authentication state:", err);
     return NextResponse.json({ loggedIn: false }, { status: 500 });
+  } finally {
+    await prisma.$disconnect;
   }
 }
 

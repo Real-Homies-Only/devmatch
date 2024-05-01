@@ -6,10 +6,8 @@ export async function GET(): Promise<NextResponse> {
   try {
     const auth = getAuth(app);
 
-    // Sign out the user
     await signOut(auth);
 
-    // Return a success response
     return NextResponse.json(
       { message: "Signed out successfully" },
       { status: 200 }

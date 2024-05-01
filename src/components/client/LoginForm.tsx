@@ -41,7 +41,7 @@ const LoginForm: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className={`${poppins.variable} font-light text-gray-700 bg-background-700 rounded-lg shadow-lg p-8`}
+      className={`${poppins.variable} my-2 font-light text-gray-700 bg-background-700 rounded-lg shadow-lg p-8`}
     >
       <div className="mb-4">
         <label htmlFor="email" className={`${poppins.className} block mb-2`}>
@@ -52,7 +52,7 @@ const LoginForm: React.FC = () => {
           id="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className={`${poppins.className} w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-700`}
+          className={`${poppins.className} w-full px-3 py-2 border bg-background-700 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-700`}
           required
         />
       </div>
@@ -65,7 +65,7 @@ const LoginForm: React.FC = () => {
           id="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className={`${poppins.className} w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-700`}
+          className={`${poppins.className} w-full px-3 py-2 border bg-background-700 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-700`}
           required
         />
       </div>

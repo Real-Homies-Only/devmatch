@@ -8,7 +8,6 @@ const Register: React.FC = () => {
       className={`${poppins.variable} flex items-center justify-center min-h-screen bg-background-700`}
     >
       <div className={`${poppins.className} text-center`}>
-        <h1 className="mb-8 text-3xl font-semibold text-gray-700">Register</h1>
         <RegisterForm />
       </div>
     </div>

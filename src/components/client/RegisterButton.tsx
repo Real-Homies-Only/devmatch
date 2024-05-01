@@ -2,16 +2,18 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 
+import { poppins } from "../fonts/poppins";
+
 const RegisterButton: React.FC = () => {
   const router = useRouter();
 
   return (
-    <span
+    <button
       onClick={() => router.push("/register")}
-      className="px-4 py-1 text-gray-700 bg-secondary-700 rounded hover:bg-accent-700 cursor-pointer"
+      className={`${poppins.className} font-light btn btn-xs btn-primary border-none text-gray-700 bg-primary-700 rounded hover:bg-accent-700 cursor-pointer`}
     >
       Sign Up
-    </span>
+    </button>
   );
 };
 

@@ -47,7 +47,7 @@ const RegisterForm: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className={`${poppins.variable} font-light text-gray-700 bg-background-700 rounded-lg shadow-lg p-8`}
+      className={`${poppins.variable} my-4 font-light text-gray-700 bg-background-700 rounded-lg shadow-lg p-8`}
     >
       <div className="mb-4">
         <label
@@ -61,7 +61,7 @@ const RegisterForm: React.FC = () => {
           id="firstName"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
-          className={`${poppins.className} w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-700`}
+          className={`${poppins.className} bg-background-700 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-700`}
           required
         />
       </div>
@@ -74,7 +74,7 @@ const RegisterForm: React.FC = () => {
           id="lastName"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
-          className={`${poppins.className} w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-700`}
+          className={`${poppins.className} bg-background-700 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-700`}
           required
         />
       </div>
@@ -87,7 +87,7 @@ const RegisterForm: React.FC = () => {
           id="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className={`${poppins.className} w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-700`}
+          className={`${poppins.className} bg-background-700 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-700`}
           required
         />
       </div>
@@ -100,7 +100,7 @@ const RegisterForm: React.FC = () => {
           id="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className={`${poppins.className} w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-700`}
+          className={`${poppins.className} bg-background-700 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-700`}
           required
         />
       </div>
@@ -112,7 +112,7 @@ const RegisterForm: React.FC = () => {
           id="userType"
           value={userType}
           onChange={(e) => setUserType(e.target.value)}
-          className={`${poppins.className} w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-700`}
+          className={`${poppins.className} bg-background-700 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-700`}
         >
           <option value="Developer">Developer</option>
           <option value="Client">Client</option>
