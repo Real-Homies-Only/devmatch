@@ -17,7 +17,3 @@ export async function GET(): Promise<NextResponse> {
     return NextResponse.json({ error: "Error signing out" }, { status: 500 });
   }
 }
-
-export const config = {
-  runtime: "edge"
-};
