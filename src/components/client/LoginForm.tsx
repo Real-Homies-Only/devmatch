@@ -1,28 +1,36 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { z, ZodType } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 import { poppins } from "../fonts/poppins";
 
 const LoginForm: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [errorStatus, setErrorStatus] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const LoginFormSchema: ZodType = z.object({
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(6, "Password must be at least 6 characters")
+  });
+  type LoginForm = z.infer<typeof LoginFormSchema>;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({ resolver: zodResolver(LoginFormSchema) });
+
+  const handleLogin = async (loginData: LoginForm) => {
     try {
       const response = await fetch("/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          email,
-          password
-        })
+        body: JSON.stringify(loginData)
       });
 
       const data = await response.json();
@@ -40,7 +48,7 @@ const LoginForm: React.FC = () => {
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(handleLogin)}
       className={`${poppins.variable} my-2 font-light text-gray-700 bg-background-700 rounded-lg shadow-lg p-8`}
     >
       <div className="mb-4">
@@ -50,11 +58,15 @@ const LoginForm: React.FC = () => {
         <input
           type="email"
           id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
           className={`${poppins.className} w-full px-3 py-2 border bg-background-700 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-700`}
           required
+          {...register("email")}
         />
+        {errors.email && (
+          <span className="text-red-700 mb-2">
+            {String(errors.email.message)}
+          </span>
+        )}
       </div>
       <div className="mb-6">
         <label htmlFor="password" className={`${poppins.className} block mb-2`}>
@@ -63,11 +75,15 @@ const LoginForm: React.FC = () => {
         <input
           type="password"
           id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
           className={`${poppins.className} w-full px-3 py-2 border bg-background-700 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-700`}
           required
+          {...register("password")}
         />
+        {errors.password && (
+          <span className="text-red-700 mb-2">
+            {String(errors.password.message)}
+          </span>
+        )}
       </div>
       <div className="mb-6">
         {errorStatus ? (

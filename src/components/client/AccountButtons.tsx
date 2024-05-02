@@ -1,5 +1,6 @@
 "use client";
 import React, { Fragment, useState, useEffect } from "react";
+import { z } from "zod";
 
 import { poppins } from "../fonts/poppins";
 import LoginButton from "./LoginButton";
@@ -7,19 +8,21 @@ import RegisterButton from "./RegisterButton";
 import ProfilePopUp from "./ProfilePopUp";
 import ProjectsButton from "./ProjectsButton";
 
-interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-}
-
 const AccountButtons: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [user, setUser] = useState<User>({
+  const [user, setUser] = useState<UserAccount>({
     id: "",
     firstName: "",
     lastName: ""
   });
+
+  const UserSchema = z.object({
+    id: z.string(),
+    firstName: z.string(),
+    lastName: z.string()
+  });
+
+  type UserAccount = z.infer<typeof UserSchema>;
 
   useEffect(() => {
     const getLoggedInStatus = async () => {
@@ -34,6 +37,9 @@ const AccountButtons: React.FC = () => {
         const data = await response.json();
 
         if (response.ok) {
+          const { success } = UserSchema.safeParse(data.user);
+          if (!success) throw new Error("User data invalid!");
+
           setUser(data.user);
           setIsLoggedIn(data.loggedIn);
         } else {
@@ -42,6 +48,7 @@ const AccountButtons: React.FC = () => {
         }
       } catch (error) {
         console.error("Error:", error);
+        setIsLoggedIn(false);
       }
     };
     getLoggedInStatus();
