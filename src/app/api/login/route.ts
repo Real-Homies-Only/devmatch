@@ -12,14 +12,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     console.log(user.uid);
     return NextResponse.json({ status: 200 });
   } catch (err) {
-    console.log("Error creating user:", err);
+    console.log("Error logging in user:", err);
     return NextResponse.json(
-      { error: "Error logging in user" },
-      { status: 400 }
+      { error: "Invalid email or password" },
+      { status: 404 }
     );
   }
 }
-
-export const config = {
-  runtime: "edge"
-};

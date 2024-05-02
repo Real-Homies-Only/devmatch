@@ -30,11 +30,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     return NextResponse.json(
       { message: "User created successfully" },
-      { status: 200 }
+      { status: 201 }
     );
   } catch (err) {
     console.log("Error creating user:", err);
-    return NextResponse.json({ error: "Error creating user" }, { status: 500 });
+    return NextResponse.json({ error: "Error creating user" }, { status: 400 });
   } finally {
     await prisma.$disconnect();
   }
