@@ -13,7 +13,7 @@ const UserSchema = z.object({
 
 type UserAccount = z.infer<typeof UserSchema>;
 
-const ProfilePage = () => {
+const ProfilePageClient = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [user, setUser] = useState<UserAccount>({
     id: "",
@@ -72,4 +72,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default ProfilePageClient;

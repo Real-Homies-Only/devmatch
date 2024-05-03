@@ -17,6 +17,7 @@ const UserSchema = z.object({
 type UserAccount = z.infer<typeof UserSchema>;
 
 const AccountButtons: React.FC = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [user, setUser] = useState<UserAccount>({
     id: "",
@@ -53,12 +54,15 @@ const AccountButtons: React.FC = () => {
     };
     setTimeout(() => {
       getLoggedInStatus();
+      setIsLoading(false);
     }, 1000);
   }, []);
 
   return (
     <Fragment>
-      {isLoggedIn ? (
+      {isLoading ? (
+        ""
+      ) : isLoggedIn ? (
         <div>
           <ProjectsButton />
           <ProfilePopUp

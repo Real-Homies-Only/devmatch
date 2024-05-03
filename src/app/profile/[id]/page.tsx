@@ -1,15 +1,16 @@
 import React from "react";
+
 import { poppins } from "@/components/fonts/poppins";
 import NavBar from "@/components/server/NavBar";
-import ProfilePageClient from "@/components/client/ProfilePageClient";
+import ProfilePageUser from "@/components/client/ProfilePageUser";
 
-const ProfilePage = () => {
+const ProfileOthers = ({ params }: { params: { id: string } }) => {
   return (
     <div className={`${poppins.variable} font-poppins`}>
       <NavBar />
-      <ProfilePageClient />
+      <ProfilePageUser id={params.id} />
     </div>
   );
 };
 
-export default ProfilePage;
+export default ProfileOthers;
