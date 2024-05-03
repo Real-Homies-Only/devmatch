@@ -10,14 +10,10 @@ export async function GET(): Promise<NextResponse> {
 
     return NextResponse.json(
       { message: "Signed out successfully" },
-      { status: 200 }
+      { status: 202 }
     );
   } catch (err) {
     console.error("Error signing out:", err);
     return NextResponse.json({ error: "Error signing out" }, { status: 500 });
   }
 }
-
-export const config = {
-  runtime: "edge"
-};

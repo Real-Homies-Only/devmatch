@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/utils/firebase";
 import { PrismaClient } from "@prisma/client";
@@ -6,13 +7,18 @@ import { PrismaClient } from "@prisma/client";
 const auth = getAuth(app);
 const prisma = new PrismaClient();
 
-interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-}
-
 export async function GET(): Promise<NextResponse> {
+  const UserSchema = z.object({
+    id: z.string(),
+    email: z.string(),
+    firstName: z.string(),
+    lastName: z.string(),
+    userType: z.string(),
+    isAdmin: z.boolean()
+  });
+
+  type User = z.infer<typeof UserSchema>;
+
   try {
     const authPromise = new Promise<{
       loggedIn: boolean;
@@ -31,8 +37,17 @@ export async function GET(): Promise<NextResponse> {
             const currentUser: User = {
               id: user.uid,
               firstName: userInfo.firstName,
-              lastName: userInfo.lastName
+              lastName: userInfo.lastName,
+              email: "",
+              userType: userInfo.userType,
+              isAdmin: userInfo.isAdmin
             };
+            if (user.email) {
+              currentUser.email = user.email;
+            }
+
+            UserSchema.parse(currentUser);
+
             resolve({ loggedIn: true, user: currentUser });
           }
         } else {
@@ -58,7 +73,3 @@ export async function GET(): Promise<NextResponse> {
     await prisma.$disconnect;
   }
 }
-
-export const config = {
-  runtime: "edge"
-};

@@ -5,11 +5,14 @@ import Icon from "@mdi/react";
 import { mdiAccount, mdiLogout, mdiAccountEdit } from "@mdi/js";
 import { useRouter } from "next/navigation";
 import { poppins } from "../fonts/poppins";
+import { z } from "zod";
 
-interface ProfileProps {
-  firstName: string;
-  photoURL: string;
-}
+const ProfilePropsSchema = z.object({
+  firstName: z.string(),
+  photoURL: z.string()
+});
+
+type ProfileProps = z.infer<typeof ProfilePropsSchema>;
 
 const ProfilePopUp: React.FC<ProfileProps> = ({ firstName, photoURL }) => {
   const router = useRouter();
