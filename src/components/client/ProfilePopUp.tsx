@@ -59,7 +59,7 @@ const ProfilePopUp: React.FC<ProfileProps> = ({ firstName, photoURL }) => {
         className="menu menu-sm dropdown-content mt-1 gap-4 z-[1] p-2 py-4 shadow bg-background-700 rounded-box w-52 text-gray-700"
       >
         <li>
-          <span color="text-gray-700">
+          <span onClick={() => router.push("/profile")} color="text-gray-700">
             <Icon path={mdiAccountEdit} size={0.8} />
             {firstName === "" ? "Account" : firstName}
           </span>

@@ -1,12 +1,9 @@
 "use client";
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { z } from "zod";
 
 import { poppins } from "../fonts/poppins";
-import LoginButton from "./LoginButton";
-import RegisterButton from "./RegisterButton";
-import ProfilePopUp from "./ProfilePopUp";
-import ProjectsButton from "./ProjectsButton";
+import ProfileContent from "./ProfileContent";
 
 const UserSchema = z.object({
   id: z.string(),
@@ -16,7 +13,7 @@ const UserSchema = z.object({
 
 type UserAccount = z.infer<typeof UserSchema>;
 
-const AccountButtons: React.FC = () => {
+const ProfilePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [user, setUser] = useState<UserAccount>({
     id: "",
@@ -55,27 +52,24 @@ const AccountButtons: React.FC = () => {
       getLoggedInStatus();
     }, 1000);
   }, []);
-
   return (
     <Fragment>
-      {isLoggedIn ? (
-        <div>
-          <ProjectsButton />
-          <ProfilePopUp
-            firstName={user.firstName}
-            photoURL="https://scontent.fceb6-1.fna.fbcdn.net/v/t39.30808-6/438935867_1812345769233161_6742176315864512411_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFcml616r0okvP88mTQi6Vc9Fls6-RfteT0WWzr5F-15AybzXGliD4-YrFJ980eOgBFcB2w2IcaeVePeteSIW2H&_nc_ohc=6_2j9_6jWZIQ7kNvgEluJVk&_nc_ht=scontent.fceb6-1.fna&oh=00_AfCAv4n13dNVUT1qpj59PQPGR7PkXT8h4dTZdrlU-a-w9w&oe=66382771"
-          />
-        </div>
+      {isLoggedIn && user ? (
+        <ProfileContent
+          displayName={`${user.firstName} ${user.lastName}`}
+          profilePictureURL="https://scontent.fceb6-1.fna.fbcdn.net/v/t39.30808-6/438935867_1812345769233161_6742176315864512411_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFcml616r0okvP88mTQi6Vc9Fls6-RfteT0WWzr5F-15AybzXGliD4-YrFJ980eOgBFcB2w2IcaeVePeteSIW2H&_nc_ohc=6_2j9_6jWZIQ7kNvgEluJVk&_nc_ht=scontent.fceb6-1.fna&oh=00_AfCAv4n13dNVUT1qpj59PQPGR7PkXT8h4dTZdrlU-a-w9w&oe=66382771"
+        />
       ) : (
         <div
-          className={`flex items-center text-xs ${poppins.className} font-light`}
+          className={`mx-2 my-2 card bg-background-700 text-gray-700 border border-gray-200 shadow-md ${poppins.className}`}
         >
-          <LoginButton />
-          <RegisterButton />
+          <h2 className="card-title font-semibold py-4 self-center">
+            You are not logged in!
+          </h2>
         </div>
       )}
     </Fragment>
   );
 };
 
-export default AccountButtons;
+export default ProfilePage;
