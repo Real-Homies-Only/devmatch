@@ -52,7 +52,7 @@ const AccountButtons: React.FC = () => {
       }
     };
     getLoggedInStatus();
-  }, []);
+  }, [UserSchema]);
 
   return (
     <Fragment>
