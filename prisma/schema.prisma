@@ -8,9 +8,10 @@ datasource db {
 }
 
 model Users {
-  id        String  @id @unique
-  firstName String
-  lastName  String
-  userType  String
-  isAdmin   Boolean @default(false)
+  id             String  @id @unique
+  firstName      String
+  lastName       String
+  userType       String
+  profilePicture String  @default("defaultPhoto.png")
+  isAdmin        Boolean @default(false)
 }
