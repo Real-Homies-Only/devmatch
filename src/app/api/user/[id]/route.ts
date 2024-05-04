@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { z } from "zod";
 import { PrismaClient } from "@prisma/client";
+import { getProfilePicture } from "../../utils/getProfilePicture";
 
 const prisma = new PrismaClient();
 
@@ -16,13 +17,13 @@ export async function GET(
     id: z.string(),
     firstName: z.string(),
     lastName: z.string(),
-    userType: z.string()
+    userType: z.string(),
+    profilePicture: z.string()
   });
 
   type User = z.infer<typeof UserSchema>;
 
   try {
-    console.log("hello " + params.id);
     if (!params.id) {
       throw new Error();
     } else {
@@ -37,11 +38,14 @@ export async function GET(
       if (!userInfo) {
         throw new Error();
       } else {
+        const url = await getProfilePicture(userInfo.profilePicture);
+
         const foundUser: User = {
           id: idString,
           firstName: userInfo.firstName,
           lastName: userInfo.lastName,
-          userType: userInfo.userType
+          userType: userInfo.userType,
+          profilePicture: url
         };
 
         UserSchema.parse(foundUser);
