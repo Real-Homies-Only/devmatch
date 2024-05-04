@@ -36,13 +36,13 @@ const LoginForm: React.FC = () => {
       const data = await response.json();
 
       if (response.ok) {
-        router.push("/");
+        router.back();
       } else {
         setErrorMessage(data.error);
         setErrorStatus(!errorStatus);
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error(error);
     }
   };
 

@@ -3,7 +3,7 @@ import { poppins } from "@/components/fonts/poppins";
 import NavBar from "@/components/server/NavBar";
 import ProfilePageClient from "@/components/client/ProfilePageClient";
 
-const ProfilePage = () => {
+const ProfilePage: React.FC = () => {
   return (
     <div className={`${poppins.variable} font-poppins`}>
       <NavBar />
