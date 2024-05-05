@@ -1,56 +1,100 @@
-import { useState, useEffect } from "react";
+import { KeyedMutator } from "swr";
 import { z } from "zod";
+
+import { User } from "@/utils/authProps";
+import useSWRImmutable from "swr/immutable";
 
 const UserSchema = z.object({
   id: z.string(),
   firstName: z.string(),
   lastName: z.string(),
-  profilePicture: z.string()
+  profilePicture: z.string(),
+  userType: z.string(),
+  isAdmin: z.boolean()
 });
 
-type UserAccount = z.infer<typeof UserSchema>;
+interface AuthState {
+  loading: boolean;
+  isLoggedIn: boolean;
+  user: User;
+}
 
-const useAuthState = () => {
-  const [loading, setLoading] = useState<boolean>(true);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [user, setUser] = useState<UserAccount>({
-    id: "",
-    firstName: "",
-    lastName: "",
-    profilePicture: ""
-  });
+interface APIResponse {
+  loggedIn: boolean;
+  user: User;
+}
 
-  useEffect(() => {
-    const getLoggedInStatus = async () => {
-      try {
-        const response = await fetch("/api/user", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json"
-          }
-        });
-        const data = await response.json();
+const fetcher = async (...args: Parameters<typeof fetch>) => {
+  const response = await fetch(...args);
+  const data: APIResponse = await response.json();
+  return data;
+};
 
-        if (response.ok) {
-          const { success } = UserSchema.safeParse(data.user);
-          if (!success) throw new Error();
-          setUser(data.user);
-          setIsLoggedIn(data.loggedIn);
-        } else {
-          setUser({ id: "", firstName: "", lastName: "", profilePicture: "" });
-          setIsLoggedIn(false);
-        }
-      } catch (error) {
-        setIsLoggedIn(false);
-      } finally {
-        setLoading(false);
-      }
+const useAuthState = (): AuthState & { mutate: KeyedMutator<APIResponse> } => {
+  const { data, error, mutate } = useSWRImmutable<APIResponse>(
+    "/api/user",
+    fetcher
+  );
+
+  if (error) {
+    console.log("error");
+    return {
+      loading: false,
+      isLoggedIn: false,
+      user: {
+        id: "",
+        firstName: "",
+        lastName: "",
+        profilePicture: "",
+        isAdmin: false,
+        userType: ""
+      },
+      mutate
     };
+  }
 
-    getLoggedInStatus();
-  }, []);
+  if (!data) {
+    console.log("got no data");
+    return {
+      loading: true,
+      isLoggedIn: false,
+      user: {
+        id: "",
+        firstName: "",
+        lastName: "",
+        profilePicture: "",
+        isAdmin: false,
+        userType: ""
+      },
+      mutate
+    };
+  }
 
-  return { loading, isLoggedIn, user };
+  const { success, data: userData } = UserSchema.safeParse(data.user);
+
+  if (!success) {
+    console.log("failed");
+    return {
+      loading: false,
+      isLoggedIn: false,
+      user: {
+        id: "",
+        firstName: "",
+        lastName: "",
+        profilePicture: "",
+        isAdmin: false,
+        userType: ""
+      },
+      mutate
+    };
+  }
+
+  return {
+    loading: false,
+    isLoggedIn: data.loggedIn,
+    user: userData,
+    mutate
+  };
 };
 
 export default useAuthState;

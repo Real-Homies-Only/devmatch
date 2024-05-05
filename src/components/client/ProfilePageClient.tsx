@@ -1,14 +1,12 @@
 "use client";
 import React, { Fragment } from "react";
-// import { useRouter } from "next/navigation";
 
 import { poppins } from "../fonts/poppins";
 import ProfileContent from "./ProfileContent";
 import useAuthState from "@/hooks/useAuthState";
 
 const ProfilePageClient = () => {
-  const { loading, user, isLoggedIn } = useAuthState();
-  // const router = useRouter();
+  const { loading, user, isLoggedIn, mutate } = useAuthState();
 
   const onChange = async (photo: File | null) => {
     try {
@@ -25,7 +23,7 @@ const ProfilePageClient = () => {
 
       if (response.ok) {
         setTimeout(() => {
-          window.location.reload();
+          mutate(undefined, true);
         }, 2000);
       } else {
         throw new Error();

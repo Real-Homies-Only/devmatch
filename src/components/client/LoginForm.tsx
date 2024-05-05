@@ -36,7 +36,10 @@ const LoginForm: React.FC = () => {
       const data = await response.json();
 
       if (response.ok) {
-        router.back();
+        router.push("/");
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       } else {
         setErrorMessage(data.error);
         setErrorStatus(!errorStatus);

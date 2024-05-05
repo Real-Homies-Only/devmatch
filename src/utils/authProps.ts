@@ -9,7 +9,7 @@ const UserSchema = z.object({
   isAdmin: z.boolean()
 });
 
-type User = z.infer<typeof UserSchema>;
+export type User = z.infer<typeof UserSchema>;
 
 export interface Auth {
   user: User;

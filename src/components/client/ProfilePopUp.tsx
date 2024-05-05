@@ -6,6 +6,7 @@ import { mdiAccount, mdiLogout, mdiAccountEdit } from "@mdi/js";
 import { useRouter } from "next/navigation";
 import { poppins } from "../fonts/poppins";
 import { z } from "zod";
+import Image from "next/image";
 
 const ProfilePropsSchema = z.object({
   firstName: z.string(),
@@ -50,7 +51,7 @@ const ProfilePopUp: React.FC<ProfileProps> = ({ firstName, photoURL }) => {
             </span>
           ) : (
             // eslint-disable-next-line @next/next/no-img-element
-            <img alt="profile" src={photoURL} />
+            <Image alt="profile" src={photoURL} width={480} height={480} />
           )}
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, getIdToken } from "firebase/auth";
 import { app } from "@/utils/firebase";
 import { PrismaClient } from "@prisma/client";
 import { getProfilePicture } from "../utils/getProfilePicture";
@@ -23,40 +23,45 @@ export async function getUserData(): Promise<{
   loggedIn: boolean;
   user?: User;
 }> {
-  const authPromise = new Promise<{ loggedIn: boolean; user?: User }>(
-    (resolve) => {
-      onAuthStateChanged(auth, async (user) => {
-        if (user) {
-          const userInfo = await prisma.users.findFirst({
-            where: { id: user.uid }
-          });
-          if (!userInfo) {
-            resolve({ loggedIn: false });
-          } else {
-            const url = await getProfilePicture(userInfo.profilePicture);
-            const currentUser: User = {
-              id: user.uid,
-              firstName: userInfo.firstName,
-              lastName: userInfo.lastName,
-              email: "",
-              userType: userInfo.userType,
-              isAdmin: userInfo.isAdmin,
-              profilePicture: url
-            };
-            if (user.email) {
-              currentUser.email = user.email;
-            }
-            UserSchema.parse(currentUser);
-            resolve({ loggedIn: true, user: currentUser });
-          }
-        } else {
-          resolve({ loggedIn: false });
-        }
-      });
-    }
-  );
+  console.log("Getting user data...");
 
-  const authState = await authPromise;
-  await prisma.$disconnect;
-  return authState;
+  const currentUser = auth.currentUser;
+
+  if (!currentUser) {
+    console.log("No user logged in");
+    await prisma.$disconnect();
+    return { loggedIn: false };
+  }
+
+  try {
+    console.log("Got user data");
+    await getIdToken(currentUser, true);
+    const userInfo = await prisma.users.findFirst({
+      where: { id: currentUser.uid }
+    });
+
+    if (!userInfo) {
+      await prisma.$disconnect();
+      return { loggedIn: false };
+    }
+
+    const url = await getProfilePicture(userInfo.profilePicture);
+    const userData: User = {
+      id: currentUser.uid,
+      firstName: userInfo.firstName,
+      lastName: userInfo.lastName,
+      email: currentUser.email || "",
+      userType: userInfo.userType,
+      isAdmin: userInfo.isAdmin,
+      profilePicture: url
+    };
+
+    UserSchema.parse(userData);
+    await prisma.$disconnect();
+    return { loggedIn: true, user: userData };
+  } catch (error) {
+    console.error("Error getting user data:", error);
+    await prisma.$disconnect();
+    return { loggedIn: false };
+  }
 }

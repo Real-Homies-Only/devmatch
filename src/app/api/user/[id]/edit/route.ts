@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import crypto from "crypto";
 import sharp from "sharp";
 import { NextRequest, NextResponse } from "next/server";
+import { getUserData } from "@/app/api/utils/getUserData";
 
 const bucketName = process.env.BUCKET_NAME || "";
 const bucketRegion = process.env.BUCKET_REGION || "";
@@ -59,12 +60,10 @@ export async function POST(
       const uploadToBucket = new PutObjectCommand(bucketParams);
       bucket.send(uploadToBucket);
 
+      const { user, loggedIn } = await getUserData();
+
       return NextResponse.json(
-        {
-          headers: {
-            Location: "/api/user"
-          }
-        },
+        { user: user, isLoggedIn: loggedIn },
         { status: 200 }
       );
     } else if (photo instanceof Blob) {
@@ -89,34 +88,18 @@ export async function POST(
 
       await prisma.$disconnect;
 
+      const { user, loggedIn } = await getUserData();
+
       return NextResponse.json(
-        { status: 202 },
-        {
-          headers: {
-            Location: "/api/user"
-          }
-        }
+        { user: user, isLoggedIn: loggedIn },
+        { status: 202 }
       );
     } else {
       await prisma.$disconnect;
-      return NextResponse.json(
-        {
-          headers: {
-            Location: "/api/user"
-          }
-        },
-        { status: 400 }
-      );
+      return NextResponse.json({ status: 400 });
     }
   } catch (error) {
     console.error("Error uploading photo:", error);
-    return NextResponse.json(
-      {
-        headers: {
-          Location: "/api/user"
-        }
-      },
-      { status: 500 }
-    );
+    return NextResponse.json({ status: 500 });
   }
 }
