@@ -24,7 +24,9 @@ const ProfilePageClient = () => {
       });
 
       if (response.ok) {
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       } else {
         throw new Error();
       }

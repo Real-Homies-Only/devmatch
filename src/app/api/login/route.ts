@@ -1,8 +1,15 @@
 import { NextResponse, NextRequest } from "next/server";
 import { z } from "zod";
 
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
+  signInWithEmailAndPassword
+} from "firebase/auth";
 import { app } from "@/utils/firebase";
+
+const auth = getAuth(app);
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const FormData = z.object({
@@ -19,9 +26,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     };
     FormData.parse(data);
 
-    const auth = getAuth(app);
-    const { user } = await signInWithEmailAndPassword(auth, email, password);
-    console.log(user.uid);
+    setPersistence(auth, browserLocalPersistence)
+      .then(() => {
+        return signInWithEmailAndPassword(auth, email, password);
+      })
+      .catch((error) => {
+        return NextResponse.json({ error: error.message }, { status: 404 });
+      });
     return NextResponse.json({ status: 200 });
   } catch (err) {
     console.log("Error logging in user:", err);
